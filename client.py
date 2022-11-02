@@ -1,7 +1,7 @@
 import select
 import socket
 
-from message_types import ACK, GPS_LOC, STATE_CHANGE, HEADING, HEARTBEAT, DELIMETER, HEADER_SIZE, MESSAGE_SIZE
+from message_types import ACK, GPS_LOC, STATE_CHANGE, HEADING, HEARTBEAT, DELIMETER, PADDING, HEADER_SIZE, MESSAGE_SIZE
 from server import SERVER_IP, SERVER_PORT
 
 
@@ -29,7 +29,7 @@ class Client:
         if len(data) > MESSAGE_SIZE:
             raise MessageSizeException
         data = (GPS_LOC + DELIMETER).encode("ascii") + data + \
-            ("0" * (MESSAGE_SIZE - len(data))).encode("ascii")
+            (PADDING * (MESSAGE_SIZE - len(data))).encode("ascii")
         print(data)
         self.sock.sendall(data)
         self.pend_ack = True
@@ -39,7 +39,7 @@ class Client:
         if len(data) > MESSAGE_SIZE:
             raise MessageSizeException
         data = (STATE_CHANGE + DELIMETER).encode("ascii") + data + \
-            ("0" * (MESSAGE_SIZE - len(data))).encode("ascii")
+            (PADDING * (MESSAGE_SIZE - len(data))).encode("ascii")
         self.sock.sendall(data)
         self.pend_ack = True
 
@@ -48,12 +48,12 @@ class Client:
         if len(data) > MESSAGE_SIZE:
             raise MessageSizeException
         data = (HEADING + DELIMETER).encode("ascii") + data + \
-            ("0" * (MESSAGE_SIZE - len(data))).encode("ascii")
+            (PADDING * (MESSAGE_SIZE - len(data))).encode("ascii")
         self.sock.sendall(data)
         self.pend_ack = True
 
     def send_heartbeat(self):
-        data = str(HEARTBEAT + DELIMETER + "0" *
+        data = str(HEARTBEAT + DELIMETER + PADDING *
                    (MESSAGE_SIZE)).encode("ascii")
         print(data)
         self.sock.sendall(data)

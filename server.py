@@ -1,7 +1,7 @@
 import socket
 import select
 
-from message_types import HEADER_SIZE, MESSAGE_SIZE, ACK, DELIMETER
+from message_types import HEADER_SIZE, MESSAGE_SIZE, ACK, DELIMETER, PADDING
 
 # SERVER_IP = "192.168.137.1"
 SERVER_IP = "127.0.0.1"
@@ -23,7 +23,7 @@ class Server:
         self.conn, self.addr = self.sock.accept()
 
     def send_ack(self):
-        data = str(ACK + DELIMETER + "0" *
+        data = str(ACK + DELIMETER + PADDING *
                    (MESSAGE_SIZE)).encode("ascii")
         self.conn.sendall(data)
 
