@@ -1,7 +1,7 @@
 import socket
 import select
 
-from message_types import HEADER_SIZE, MESSAGE_SIZE, ACK, DELIMETER, PADDING
+from message_types import HEADER_SIZE, MESSAGE_SIZE, ACK, DELIMETER, PADDING, VALID_TYPES, MessageSizeException, MessageTypeException
 
 # SERVER_IP = "192.168.137.1"
 SERVER_IP = "127.0.0.1"
@@ -26,6 +26,17 @@ class Server:
         data = str(ACK + DELIMETER + PADDING *
                    (MESSAGE_SIZE)).encode("ascii")
         self.conn.sendall(data)
+
+    def send_message(self, msg_type: str, msg: str):
+        data = msg.encode("ascii")
+        if not msg_type in VALID_TYPES:
+            raise MessageTypeException
+        if len(data) > MESSAGE_SIZE:
+            raise MessageSizeException
+        data = (msg_type + DELIMETER).encode("ascii") + data + \
+            (PADDING * (MESSAGE_SIZE - len(data))).encode("ascii")
+        print(data)
+        self.sock.sendall(data)
 
     def read_messages(self, timeout: float = 0.1) -> "list[tuple[str, str]]":
         messages: "list[tuple[str, str]]" = []
