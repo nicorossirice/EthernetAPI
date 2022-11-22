@@ -1,7 +1,7 @@
 import socket
 import select
 
-from message_types import HEADER_SIZE, MESSAGE_SIZE, ACK, DELIMETER, PADDING, VALID_TYPES, MessageSizeException, MessageTypeException
+from .message_types import HEADER_SIZE, MESSAGE_SIZE, ACK, DELIMETER, PADDING, VALID_TYPES, MessageSizeException, MessageTypeException
 
 # SERVER_IP = "192.168.137.1"
 SERVER_IP = "127.0.0.1"

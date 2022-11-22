@@ -1,8 +1,8 @@
 import select
 import socket
 
-from message_types import ACK, GPS_LOC, STATE_CHANGE, HEADING, HEARTBEAT, DELIMETER, PADDING, HEADER_SIZE, MESSAGE_SIZE, VALID_TYPES, MessageTypeException, MessageSizeException
-from server import SERVER_IP, SERVER_PORT
+from .message_types import ACK, GPS_LOC, STATE_CHANGE, HEADING, HEARTBEAT, DELIMETER, PADDING, HEADER_SIZE, MESSAGE_SIZE, VALID_TYPES, MessageTypeException, MessageSizeException
+from .server import SERVER_IP, SERVER_PORT
 
 
 class Client:
