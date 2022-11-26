@@ -45,10 +45,14 @@ class Server:
                 [self.conn], [], [], timeout)
             if read_list:
                 print("reading...", read_list)
-                buffer = self.conn.recv(HEADER_SIZE + MESSAGE_SIZE).decode("ascii")
+                buffer: str = self.conn.recv(HEADER_SIZE + MESSAGE_SIZE).decode("ascii")
                 if buffer == '':
                     raise ClientDisconnectException
-                messages.append((buffer[0:6], buffer[7:]))
+                end_padding_idx = buffer.find(PADDING, 7)
+                if end_padding_idx == -1:
+                    messages.append((buffer[0:6], buffer[7:]))
+                else:
+                    messages.append((buffer[0:6], buffer[7:end_padding_idx]))
             else:
                 break
         return messages

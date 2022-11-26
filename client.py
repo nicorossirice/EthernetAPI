@@ -4,7 +4,6 @@ import socket
 from .message_types import ACK, GPS_LOC, STATE_CHANGE, HEADING, HEARTBEAT, DELIMETER, PADDING, HEADER_SIZE, MESSAGE_SIZE, VALID_TYPES, MessageTypeException, MessageSizeException
 from .server import SERVER_IP, SERVER_PORT
 
-
 class Client:
 
     def __init__(self) -> None:
@@ -71,8 +70,12 @@ class Client:
             read_list, write_list, error_list = select.select(
                 [self.sock], [], [], timeout)
             if read_list:
-                buffer = self.sock.recv(HEADER_SIZE + MESSAGE_SIZE).decode("ascii")
-                messages.append((buffer[0:6], buffer[7:]))
+                buffer: str = self.sock.recv(HEADER_SIZE + MESSAGE_SIZE).decode("ascii")
+                end_padding_idx = buffer.find(PADDING, 7)
+                if end_padding_idx == -1:
+                    messages.append((buffer[0:6], buffer[7:]))
+                else:
+                    messages.append((buffer[0:6], buffer[7:end_padding_idx]))
                 if messages[-1][0] == ACK:
                     self.pend_ack = False
             else:
