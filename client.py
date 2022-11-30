@@ -2,7 +2,6 @@ import select
 import socket
 
 from .message_types import ACK, GPS_LOC, STATE_CHANGE, HEADING, HEARTBEAT, DELIMETER, PADDING, HEADER_SIZE, MESSAGE_SIZE, VALID_TYPES, MessageTypeException, MessageSizeException
-from .server import SERVER_IP, SERVER_PORT
 
 class Client:
 
@@ -10,9 +9,9 @@ class Client:
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.pend_ack = False
 
-    def connect(self) -> bool:
+    def connect(self, server_ip, server_port) -> bool:
         try:
-            self.sock.connect((SERVER_IP, SERVER_PORT))
+            self.sock.connect((server_ip, server_port))
             return True
         except ConnectionError:
             return False

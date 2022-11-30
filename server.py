@@ -14,9 +14,9 @@ class ClientDisconnectException(Exception):
 
 class Server:
 
-    def __init__(self) -> None:
+    def __init__(self, server_port=SERVER_PORT) -> None:
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.bind(("", SERVER_PORT))
+        self.sock.bind(("", server_port))
         self.sock.listen(5)
 
     def connect(self):
