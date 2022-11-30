@@ -38,7 +38,7 @@ class Server:
         print(data)
         self.conn.sendall(data)
 
-    def read_messages(self, timeout: float = 0.1) -> "list[tuple[str, str]]":
+    def read_messages(self, timeout: float = 0.1, max_messages: int = 10) -> "list[tuple[str, str]]":
         messages: "list[tuple[str, str]]" = []
         while True:
             read_list, write_list, error_list = select.select(
@@ -53,6 +53,8 @@ class Server:
                     messages.append((buffer[0:6], buffer[7:]))
                 else:
                     messages.append((buffer[0:6], buffer[7:end_padding_idx]))
+                if len(messages) > max_messages:
+                    break
             else:
                 break
         return messages
