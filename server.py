@@ -36,7 +36,7 @@ class Server:
         data = (msg_type + DELIMETER).encode("ascii") + data + \
             (PADDING * (MESSAGE_SIZE - len(data))).encode("ascii")
         print(data)
-        self.sock.sendall(data)
+        self.conn.sendall(data)
 
     def read_messages(self, timeout: float = 0.1) -> "list[tuple[str, str]]":
         messages: "list[tuple[str, str]]" = []
