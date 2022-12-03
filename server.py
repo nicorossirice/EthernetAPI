@@ -44,7 +44,6 @@ class Server:
             read_list, write_list, error_list = select.select(
                 [self.conn], [], [], timeout)
             if read_list:
-                print("reading...", read_list)
                 buffer: str = self.conn.recv(HEADER_SIZE + MESSAGE_SIZE).decode("ascii")
                 if buffer == '':
                     raise ClientDisconnectException
