@@ -22,6 +22,10 @@ class Server:
     def connect(self):
         self.conn, self.addr = self.sock.accept()
 
+    def close(self):
+        self.conn.close()
+        self.sock.close()
+
     def send_ack(self):
         data = str(ACK + DELIMETER + PADDING *
                    (MESSAGE_SIZE)).encode("ascii")
